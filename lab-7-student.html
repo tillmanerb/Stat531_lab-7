@@ -3551,7 +3551,7 @@ Tip
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rescale_column <span class="ot">&lt;-</span> <span class="cf">function</span>(frm, col_vec) {</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    frm <span class="sc">|&gt;</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> {{col_vec}},</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">rescale_01</span>(.x, <span class="co">#Needed some help debugging here #https://gemini.google.com/app/d9e0a223f600c4a1</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">rescale_01</span>(.x, <span class="co">#Learned about the role of .x through #https://gemini.google.com/app/d9e0a223f600c4a1</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">na.rm =</span> <span class="cn">FALSE</span>))</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      )</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4322,7 +4322,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a>rescale_column <span class="ot">&lt;-</span> <span class="cf">function</span>(frm, col_vec) {</span>
 <span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a>    frm <span class="sc">|&gt;</span></span>
 <span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> {{col_vec}},</span>
-<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">rescale_01</span>(.x, <span class="co">#Needed some help debugging here #https://gemini.google.com/app/d9e0a223f600c4a1</span></span>
+<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">rescale_01</span>(.x, <span class="co">#Learned about the role of .x through #https://gemini.google.com/app/d9e0a223f600c4a1</span></span>
 <span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">na.rm =</span> <span class="cn">FALSE</span>))</span>
 <span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a>      )</span>
 <span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a>}</span>

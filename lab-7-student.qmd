@@ -249,7 +249,7 @@ section of R for Data Science!
 rescale_column <- function(frm, col_vec) {
     frm |>
       mutate(across(.cols = {{col_vec}},
-                    .fns = ~ rescale_01(.x, #Needed some help debugging here #https://gemini.google.com/app/d9e0a223f600c4a1
+                    .fns = ~ rescale_01(.x, #Learned about the role of .x through #https://gemini.google.com/app/d9e0a223f600c4a1
                                         na.rm = FALSE))
       )
 }
