@@ -86,12 +86,12 @@ bf_fish |>
   ggplot(mapping = aes(x = year, fill = section)) +
   facet_grid(~ trip) + 
   geom_bar() +
+  scale_fill_viridis_d() + #Debugged here with Gemini #https://gemini.google.com/app/43c895d2be4a0918
   labs(x = "Year",
        y = NULL,
-       title = "Missing observation frequency by trip and study year",
+       title = "Missing observation frequency by section, trip and year",
        subtitle = "Number of missing observations",
-       color = "Section") +
-  scale_colour_viridis_d()
+       color = "Section")
 ```
 
 ## Rescaling the Data
@@ -124,6 +124,7 @@ understand the intent of the process. *Additionally, it can make it very difficu
 
 **3. What is the mistake I made in the above rescaling code?**
 
+*When copy pasting the code (from length to weight), you forgot to change one of the 'length' values back to 'weight'*
 
 When you find yourself copy-pasting lines of code, it's time to write a
 function, instead!
@@ -136,6 +137,20 @@ function, instead!
 ```{r}
 #| label: write-rescale-function
 
+rescale_01 <- function(vec, na.rm = TRUE) {
+  if (!is.numeric(vec[1])){
+    stop("Error: vector provided is not numeric")
+  } else if (length(vec) <= 1) {
+    stop("Error: vector length must be greater than 1")
+  }
+  vec_range <- range(vec, na.rm = TRUE, finite = TRUE)
+  vec <- (vec - vec_range[1]) / 
+           (vec_range[2] - vec_range[1])
+  if (na.rm){
+    vec <- vec[!is.na(vec)] #https://www.geeksforgeeks.org/remove-na-values-from-vector-in-r/
+  }
+  return(vec)
+}
 ```
 
 ::: callout-tip
@@ -183,8 +198,9 @@ statement in order to create a `length_scaled` variable.
 
 ```{r}
 #| label: compare-original-with-rescaled-lengths
+#| layout-ncol: 2
 
-fish |>  
+bf_fish |>  
   ggplot(aes(x = length)) + 
   geom_histogram(binwidth = 45) +
   labs(x = "Original Values of Fish Length (mm)") +
@@ -192,6 +208,12 @@ fish |>
 
 # Code for Q7 plot.
 
+bf_fish |>
+  mutate(length_scaled = rescale_01(length)) |>
+  ggplot(aes(x = length_scaled)) + 
+  geom_histogram(binwidth = 0.045) +
+  labs(x = "Scaled Values of Fish Length (mm)") +
+  scale_y_continuous(limits = c(0,4000)) 
 ```
 
 ::: callout-tip
@@ -224,6 +246,13 @@ section of R for Data Science!
 ```{r}
 #| label: rescale-data-frame-function
 
+rescale_column <- function(frm, col_vec) {
+    frm |>
+      mutate(across(.cols = {{col_vec}},
+                    .fns = ~ rescale_01(.x, #Needed some help debugging here #https://gemini.google.com/app/d9e0a223f600c4a1
+                                        na.rm = FALSE))
+      )
+}
 ```
 
 **9. Use your `rescale_column()` function to rescale *both* the `length` and `weight` columns.**
@@ -234,5 +263,6 @@ I expect that you carry out this process by calling the `rescale_column()` funct
 
 ```{r}
 #| label: rescale-two-columns
-
+bf_fish |> 
+  rescale_column(length:weight)
 ```
