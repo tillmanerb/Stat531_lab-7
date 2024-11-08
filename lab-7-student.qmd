@@ -1,9 +1,20 @@
 ---
 title: "Lab 7: Functions + Fish"
-author: "Your name here!"
-format: html
+author: "Tillman Erb"
+date: "11/07/2024"
+format: 
+  html:  
+    embed-resources: true
+    code-tools: true
+    toc: true
 editor: source
-embed-resources: true
+code-fold: true
+self-contained: true
+theme: darkly
+execute:
+  echo: true
+  error: true
+  warning: false
 ---
 
 The goal of this lab is learn more about exploring missing data and writing
@@ -12,7 +23,11 @@ modular code.
 ```{r}
 #| label: setup
 
+library(here)
+library(tidyverse)
 
+bf_fish <- read_csv(file = here::here("data","BlackfootFish.csv"))
+glimpse(bf_fish)
 ```
 
 ## The Data
@@ -44,6 +59,17 @@ measurement errors.
 
 ```{r}
 #| label: find-missing-values
+#| 
+table_count <- bf_fish |>
+  filter(if_any(.fns = is.na, .cols = everything())) |>
+  summarize(count = n())
+
+null_counts <- bf_fish |>
+  filter(if_any(.cols = everything(), .fns = is.na)) |>
+  summarize(across(.cols = everything(), .fns = ~ sum(is.na(.x)))) #Couldn't figure out how to apply the sum(is.na(.x)) to all columns without erroring. Learned about anonymous functions through https://gemini.google.com/app/43c895d2be4a0918
+
+null_counts$total_rows_with_NAs <- table_count$count
+null_counts
 
 ```
 
@@ -51,7 +77,21 @@ measurement errors.
 
 ```{r}
 #| label: visual-of-missing-values-over-time
-
+bf_fish |>
+  filter(if_any(.cols = everything(), .fns = is.na)) |>
+  mutate(trip = as.character(trip),
+         trip = fct_recode(trip,
+      "Trip 1" = "1",
+      "Trip 2" = "2")) |>
+  ggplot(mapping = aes(x = year, fill = section)) +
+  facet_grid(~ trip) + 
+  geom_bar() +
+  labs(x = "Year",
+       y = NULL,
+       title = "Missing observation frequency by trip and study year",
+       subtitle = "Number of missing observations",
+       color = "Section") +
+  scale_colour_viridis_d()
 ```
 
 ## Rescaling the Data
