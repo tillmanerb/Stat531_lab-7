@@ -120,7 +120,7 @@ bf_fish |>
   ggplot(mapping = aes(x = year, y = condition)) +
   geom_point(color = 'steelblue', alpha = 0.4) +
   geom_smooth(method = 'loess', color = 'black') +
-  scale_y_continuous(limits = c(0,5)) +
+  scale_y_continuous(limits = c(0.5,2)) +
   facet_grid(~ species) +
   labs(x = "Year",
        y = NULL,
